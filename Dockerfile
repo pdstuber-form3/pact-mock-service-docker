@@ -2,8 +2,10 @@ FROM ruby:2-alpine
 
 COPY Gemfile /app/
 COPY Gemfile.lock /app/
+
 RUN apk add --no-cache --virtual build-dependencies build-base && \
-    gem install bundler --no-ri --no-rdoc && \
+    echo ':ssl_verify_mode: 0' >> /usr/local/etc/gemrc &&\
+    gem install bundler --no-document && \
     cd /app; bundle install && \
     gem uninstall bundler && \
     apk del build-dependencies build-base && \
